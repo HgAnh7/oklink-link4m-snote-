@@ -9,7 +9,7 @@ from selenium.common.exceptions import ElementClickInterceptedException, StaleEl
 import telebot
 
 BOT_TOKEN = 'TOKEN'
-bot = telebot.TeleBot(BOT_TOKEN)
+bot = telebot.TeleBot(BOT_TOKEN, skip_pending=True)
 
 XPATH = '/html/body/div/div/div/center/div[1]/div/a'
 
