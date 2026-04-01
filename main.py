@@ -86,12 +86,12 @@ def get_snote_content(note_id):
 @bot.message_handler(func=lambda msg: 'oklink.cfd' in msg.text)
 def handle_oklink(message):
     url = message.text.strip()
-    bot.reply_to(message, '⏳ Đang xử lý, vui lòng chờ...')
+    waiting_msg = bot.reply_to(message, '⏳ Đang xử lý, vui lòng chờ...')
     try:
         link4m_url = get_link4m(url)
         if not link4m_url:
             bot.delete_message(message.chat.id, waiting_msg.message_id)
-            waiting_msg = bot.reply_to(message, '❌ Không tìm được link4m.')
+            bot.reply_to(message, '❌ Không tìm được link4m.')
             return
 
         snote_id = get_snote_id(link4m_url)
@@ -101,10 +101,11 @@ def handle_oklink(message):
             return
 
         content = get_snote_content(snote_id)
+        bot.delete_message(message.chat.id, waiting_msg.message_id)
         bot.reply_to(message, content)
 
     except Exception as e:
         bot.delete_message(message.chat.id, waiting_msg.message_id)
         bot.reply_to(message, f'❌ Lỗi: {str(e)}')
-
+        
 bot.infinity_polling()
