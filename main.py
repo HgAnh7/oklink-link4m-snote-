@@ -8,8 +8,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import ElementClickInterceptedException, StaleElementReferenceException
 import telebot
 
-BOT_TOKEN = 'TOKEN'
-bot = telebot.TeleBot(BOT_TOKEN, skip_pending=True)
+TELEGRAM_TOKEN = os.getenv('TOKEN')
+bot = telebot.TeleBot(TELEGRAM_TOKEN, skip_pending=True)
 
 XPATH = '/html/body/div/div/div/center/div[1]/div/a'
 
