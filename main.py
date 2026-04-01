@@ -7,6 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import ElementClickInterceptedException, StaleElementReferenceException
 import telebot
+from selenium.webdriver.chrome.service import Service
 
 TELEGRAM_TOKEN = os.getenv('TOKEN')
 bot = telebot.TeleBot(TELEGRAM_TOKEN, skip_pending=True)
@@ -21,7 +22,10 @@ def create_driver():
     options.add_argument("--disable-gpu")
     options.add_argument("--log-level=3")
     options.add_argument("--window-size=1920,1080")
-    return webdriver.Chrome(options=options)
+    
+    # Chỉ định rõ đường dẫn chromedriver trên Debian/ARM
+    service = Service("/usr/bin/chromedriver")
+    return webdriver.Chrome(service=service, options=options)
 
 # ── Bước 1: Lấy link4m ──────────────────────────────────────────
 def get_link4m(oklink_url):
