@@ -53,7 +53,7 @@ def get_snote_content(note_id):
 
 	note = data.get('note')
 	if not note:
-		return 'Không tìm thấy nội dung.'
+		return 'Không tìm thấy nội dung. \nPhiên bản có thể đã cập nhật.'
 		
 	title = note.get('title') #
 
