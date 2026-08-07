@@ -43,22 +43,25 @@ def get_snote_id(link4m_url):
 
 
 def get_snote_content(note_id):
-	url = f'https://note2s.im/notes/{note_id}'
-	headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+	url = f'https://note2s.im/api/notes/{note_id}'
+	
+	headers = {
+		'User-Agent': 'Mozilla/5.0'
+	}
 	response = requests.get(url, headers=headers)
-	response.raise_for_status()
-	soup = BeautifulSoup(response.text, 'html.parser')
-	note_time = soup.find('h5')
-	time_text = note_time.get_text().strip() if note_time else 'Không rõ thời gian.'
-	content_tag = soup.find('p')
-	if content_tag:
-		content = content_tag.get_text().strip()
-		if content and content != '/':
-			return f'Nội dung:\n{content}\n\nThời gian: {time_text}'
-		else:
-			return f'Note chưa sẵn sàng hoặc hết hạn.\nThời gian: {time_text}'
-	return 'Không tìm thấy nội dung.'
+	data = response.json()
 
+	note = data.get('note')
+	if not note:
+		return 'Không tìm thấy nội dung.'
+		
+	title = note.get('title') #
+
+	html = note.get('content')
+	soup = BeautifulSoup(html, 'html.parser')
+	content = soup.a['href'] #
+	
+	return f'Content:\n{content}\n\nTitle: {title}'
 
 @bot.message_handler(func=lambda m: True)
 def handle_message(message):
